@@ -45,6 +45,7 @@ install() {
     # For tpm2_unseal
     inst "/usr/bin/tpm2_unseal"
     inst "/usr/lib/libtss2-tcti-device.so"
+    inst "/usr/bin/cryptsetup"
 
     # Probe TPM modules
     inst_hook cmdline 10 "$moddir/probe-luks-tpm2.sh"
