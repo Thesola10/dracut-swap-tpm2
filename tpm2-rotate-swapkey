@@ -1,5 +1,13 @@
 #!/bin/sh
 
+getarg() {
+    grep -Eo "$1(\\S+)" /proc/cmdline | cut -d= -f2
+}
+
+part="$(getarg rd.swap_tpm2_partition=)"
+handle="$(getarg rd.swap_tpm2_handle=)"
+auth="$(getarg rd.swap_tpm2_auth=)"
+
 # Kill swap image to manipulate partition
 swapoff /dev/mapper/swap
 cryptsetup close /dev/mapper/swap
@@ -10,10 +18,10 @@ cd /tmp
 dd if=/dev/random of=/tmp/newswapkey bs=32 count=1
 
 # Purge old key from TPM2
-tpm2_evictcontrol -c 0x81000000 -C o
+tpm2_evictcontrol -c $handle -C o
 
 # Create one-time TPM2 load policy and load the key
-tpm2_createpolicy --policy-pcr -l sha1:0,7 -L /tmp/policy.digest
+tpm2_createpolicy --policy-pcr -l ${auth##pcr:} -L /tmp/policy.digest
 tpm2_createprimary -C e -g sha1 -G rsa -c /tmp/primary.context
 tpm2_create -g sha256 \
             -u /tmp/obj.pub -r /tmp/obj.priv \
@@ -24,9 +32,9 @@ tpm2_create -g sha256 \
 tpm2_load -C /tmp/primary.context \
           -u /tmp/obj.pub -r /tmp/obj.priv \
           -c /tmp/load.context
-tpm2_evictcontrol -C o -c /tmp/load.context 0x81000000
+tpm2_evictcontrol -C o -c /tmp/load.context $handle
 
 # Reformat LUKS2 volume with the new key
-cryptsetup luksFormat $1 /tmp/newswapkey
+cryptsetup luksFormat $part /tmp/newswapkey
 
 
