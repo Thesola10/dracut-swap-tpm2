@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# Kill swap image to manipulate partition
+swapoff /dev/mapper/swap
+cryptsetup close /dev/mapper/swap
+
+cd /tmp
+
+# Generate new key
+dd if=/dev/random of=/tmp/newswapkey bs=32 count=1
+
+# Purge old key from TPM2
+tpm2_evictcontrol -c 0x81000000 -C o
+
+# Create one-time TPM2 load policy and load the key
+tpm2_createpolicy --policy-pcr -l sha1:0,7 -L /tmp/policy.digest
+tpm2_createprimary -C e -g sha1 -G rsa -c /tmp/primary.context
+tpm2_create -g sha256 \
+            -u /tmp/obj.pub -r /tmp/obj.priv \
+            -C /tmp/primary.context \
+            -L /tmp/policy.digest \
+            -a "noda|adminwithpolicy|fixedparent|fixedtpm" \
+            -i /tmp/newswapkey
+tpm2_load -C /tmp/primary.context \
+          -u /tmp/obj.pub -r /tmp/obj.priv \
+          -c /tmp/load.context
+tpm2_evictcontrol -C o -c /tmp/load.context 0x81000000
+
+# Reformat LUKS2 volume with the new key
+cryptsetup luksFormat $1 /tmp/newswapkey
+
+
