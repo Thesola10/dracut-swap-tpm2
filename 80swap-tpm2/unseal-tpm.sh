@@ -2,7 +2,7 @@
 
 . /lib/dracut-lib.sh
 
-secret_file="$(getarg rd.swap_tpm2_output=)"
+secret_file="/secret.key"
 part="$(getarg rd.swap_tpm2_partition=)"
 handle="$(getarg rd.swap_tpm2_handle=)"
 auth="$(getarg rd.swap_tpm2_auth=)"
