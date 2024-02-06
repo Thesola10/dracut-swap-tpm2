@@ -61,7 +61,7 @@ install() {
 
     # TODO: Get this from dracut cmdline?
     # Enable service
-    systemctl -q --root "$initdir" enable unseal-tpm@tpmrm0.service
+    systemctl -q --root "$initdir" enable unseal-tpm-swap@tpmrm0.service
 
     # Rules to trigger service
     inst_rules "$moddir/90-tpmrm.rules"
