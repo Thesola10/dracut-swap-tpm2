@@ -18,4 +18,4 @@ add_dracutmodules+=" swap-tpm2 crypt "
 kernel_cmdline+=" rd.swap_tpm2_partition=/dev/sda3 rd.swap_tpm2_handle=0x81000000 rd.swap_tpm2_auth=pcr:sha1:0,2,4,7 "
 ```
 
-You also need to enable `tpm2-rotate-swapkey@/dev/sda3.service` (or whichever swap partition is in use) in order to enable regenerating the encrypted swap partition.
+You also need to enable `tpm2-rotate-swapkey.service` in order to enable regenerating the encrypted swap partition. This unit reads kernel command line options and may not work before a reboot.
