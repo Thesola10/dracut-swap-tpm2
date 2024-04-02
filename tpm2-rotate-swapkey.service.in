@@ -10,4 +10,4 @@ PrivateTmp=true
 RootEphemeral=true
 
 [Install]
-WantedBy=swaps.target
+WantedBy=multi-user.target
