@@ -1,14 +1,13 @@
 [Unit]
 Description=Generate new TPM2 key for swap partition
-DefaultDependencies=no
-After=final.target
 
 [Service]
 Type=oneshot
-ExecStart=$PREFIX/bin/tpm2-rotate-swapkey
+RemainAfterExit=true
+ExecStop=$PREFIX/bin/tpm2-rotate-swapkey
 
 PrivateTmp=true
 RootEphemeral=true
 
 [Install]
-WantedBy=final.target
+WantedBy=swaps.target
