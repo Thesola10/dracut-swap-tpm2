@@ -1,5 +1,12 @@
+# vim: ft=systemd
+# dracut-swap-tpm2
+# systemd unit to re-encrypt TPM2 before shutdown
+
 [Unit]
 Description=Generate new TPM2 key for swap partition
+# Ensures tpm2-abrmd is still alive before our ExecStop
+Requires=tpm2-abrmd.service
+After=tpm2-abrmd.service
 
 [Service]
 Type=oneshot
