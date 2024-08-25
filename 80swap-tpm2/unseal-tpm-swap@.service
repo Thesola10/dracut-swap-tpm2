@@ -19,4 +19,4 @@ ExecStart=/usr/bin/unseal-tpm.sh
 
 [Install]
 WantedBy=cryptsetup.target
-
+WantedBy=sysinit.target
