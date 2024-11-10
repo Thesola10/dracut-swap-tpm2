@@ -21,6 +21,8 @@ if [[ "$res" -eq 0 ]]; then
 
     # Attempt to restore hibernation context
     echo "/dev/mapper/swap" > /sys/power/resume
+
+    swapon /dev/mapper/swap
 else
     warn "TPM could not unseal"
 fi
