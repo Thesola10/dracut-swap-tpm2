@@ -5,8 +5,8 @@
 [Unit]
 Description=Generate new TPM2 key for swap partition
 # Ensures tpm2-abrmd is still alive before our ExecStop
-Requires=tpm2-abrmd.service
-After=tpm2-abrmd.service
+Requires=tpm2.target
+After=tpm2.target
 
 [Service]
 Type=oneshot
