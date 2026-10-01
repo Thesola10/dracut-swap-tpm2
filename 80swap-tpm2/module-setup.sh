@@ -8,11 +8,6 @@ DEFAULT_AUTH="pcr:sha1:0,2,4,7"
 check() {
     require_binaries "tpm2_unseal"
 
-    if ! tpm2_pcrread > /dev/null; then
-        echo "No TPM detected"
-        return 1
-    fi
-
     # Taken from crypt module
     #TODO: deprecate?
     [[ $hostonly ]] || [[ $mount_needs ]] && {
