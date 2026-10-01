@@ -8,4 +8,7 @@ install: tpm2-rotate-swapkey tpm2-rotate-swapkey.service.in 80swap-tpm2
 	mkdir -p ${DESTDIR}${PREFIX}/lib/dracut/modules.d
 	cp -r 80swap-tpm2 ${DESTDIR}${PREFIX}/lib/dracut/modules.d/
 
+rpm:
+	rpmbuild --define "_sourcedir `pwd`" -ba dracut-swap-tpm2.spec
+
 .PHONY: install
