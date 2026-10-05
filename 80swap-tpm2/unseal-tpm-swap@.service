@@ -8,6 +8,7 @@ Wants=cryptsetup-pre.target
 
 Requires=dev-%i.device
 After=dev-%i.device
+After=systemd-pcrphase-initrd.service
 
 DefaultDependencies=no
 

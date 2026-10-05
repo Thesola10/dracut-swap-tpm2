@@ -1,3 +1,9 @@
+> [!WARNING]
+>
+> This repo is archived! Modern systems can achieve this feature without a custom dracut module, using `systemd-cryptenroll`.
+>
+> Given the security-oriented nature of this project, I am discontinuing it and discourage its use.
+
 # TPM-backed swap encryption with hibernate support
 
 This is my dracut config to encrypt swap with a random key at shutdown, which is then unsealed from TPM to support hibernation.
